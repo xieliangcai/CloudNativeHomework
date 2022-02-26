@@ -28,12 +28,12 @@ type Handle interface {
 func handle(w http.ResponseWriter, req *http.Request) {
 	for k, v := range req.Header{
 		for _, value := range v{
-			w.Header().Set(k, value)
+			w.Header().Add(k, value)
 		}
 	}
 	os.Setenv("VERSION", "1.11")
 	s := os.Getenv("VERSION")
-	w.Header().Set("VERSION", s)
+	w.Header().Add("VERSION", s)
 
 	w.WriteHeader(300)
 
