@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/golang/glog"
+	"fmt"
 	"net/http"
 	"os"
 )
@@ -16,13 +16,14 @@ const ()
 
 func main() {
 	http.HandleFunc("/", handle)
-	http.HandleFunc("/localhost/healthy", handle)
+	http.HandleFunc("/localhost/healthy", Healthy)
 	http.ListenAndServe(":80", nil)
 
 }
 
-type Handle interface {
-	handle(w http.ResponseWriter, req *http.Request)
+
+func Healthy(w http.ResponseWriter, req *http.Request)   {
+	fmt.Fprintln(w, "OK")
 }
 
 func handle(w http.ResponseWriter, req *http.Request) {
@@ -35,8 +36,6 @@ func handle(w http.ResponseWriter, req *http.Request) {
 	s := os.Getenv("VERSION")
 	w.Header().Add("VERSION", s)
 
-	w.WriteHeader(300)
-
-	glog.Info(req.Host, "200")
+	fmt.Println(req.Host, "200")
 }
 
